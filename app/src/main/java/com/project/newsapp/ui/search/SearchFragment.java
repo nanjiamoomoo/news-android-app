@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.project.newsapp.R;
 import com.project.newsapp.repository.NewsRepository;
+import com.project.newsapp.repository.NewsViewModelFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,7 +76,7 @@ public class SearchFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         NewsRepository repository = new NewsRepository();
-        viewModel = new SearchViewModel(repository);
+        viewModel = new ViewModelProvider(this, new NewsViewModelFactory(repository)).get(SearchViewModel.class);
         viewModel.setSearchInput("Covid-19");
         viewModel
                 .searchNews()

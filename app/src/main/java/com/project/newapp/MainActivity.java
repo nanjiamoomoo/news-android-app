@@ -10,7 +10,7 @@ import android.os.Bundle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-    //
+    
     private NavController navController;
 
     //Overriding onSupportNavigateUp is for handling the top left back button.

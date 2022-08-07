@@ -1,13 +1,17 @@
 package com.project.newsapp.ui.search;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.project.newsapp.R;
+import com.project.newsapp.repository.NewsRepository;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,6 +19,8 @@ import com.project.newsapp.R;
  * create an instance of this fragment.
  */
 public class SearchFragment extends Fragment {
+
+    private SearchViewModel viewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,5 +67,20 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        NewsRepository repository = new NewsRepository();
+        viewModel = new SearchViewModel(repository);
+        viewModel.setSearchInput("Covid-19");
+        viewModel
+                .searchNews()
+                .observe(getViewLifecycleOwner(),
+                        newsResponse -> {
+                            Log.d("SearchFragment", newsResponse.toString());
+                        });
     }
 }

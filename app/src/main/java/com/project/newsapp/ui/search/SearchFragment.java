@@ -87,6 +87,7 @@ public class SearchFragment extends Fragment {
         viewModel = new ViewModelProvider(this, new NewsViewModelFactory(repository)).get(SearchViewModel.class);
         viewModel
                 .searchNews()
+                //If LiveData already has data set, it will be delivered to the observer
                 .observe(getViewLifecycleOwner(),
                         newsResponse -> {
                             Log.d("SearchFragment", newsResponse.toString());

@@ -1,10 +1,15 @@
 package com.project.newsapp.repository;
 
 
+import android.os.AsyncTask;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
+import com.project.newsapp.NewsApplication;
+import com.project.newsapp.database.ArticleDao;
+import com.project.newsapp.database.NewsAppDatabase;
+import com.project.newsapp.model.Article;
 import com.project.newsapp.model.NewsResponse;
 import com.project.newsapp.network.NewsApi;
 import com.project.newsapp.network.RetrofitClient;
@@ -16,20 +21,50 @@ import retrofit2.Response;
 public class NewsRepository {
 
     private final NewsApi newsApi;
+    private final NewsAppDatabase database;
 
     public NewsRepository() {
         //Create an implementation of the API endpoints defined by the NewsApi interface.
         newsApi = RetrofitClient.newInstance().create(NewsApi.class);
+        database = NewsApplication.getDatabase();
     }
 
-    /**
-     * Get data from endpoint using url https://newsapi.org/v2/top-headlines?country={country} with registered apiKey,
-     * * and hold the data in LiveData
-     * @param country: the search keyword
-     * @return LiveData: This class is designed to hold individual data fields of {@link ViewModel},
-     * * but can also be used for sharing data between different modules in your application
-     * * in a decoupled fashion.
-     */
+    // Database query accessing the disk storage can be very slow sometimes.
+    // We do not want it to run on the default main UI thread.
+    // So we use an AsyncTask to dispatch the query work to a background thread.
+    private static class FavoriteAsyncTask extends AsyncTask<Article, Void, Boolean> {
+        private final NewsAppDatabase database;
+        private final MutableLiveData<Boolean> liveData;
+
+        private FavoriteAsyncTask(NewsAppDatabase database, MutableLiveData<Boolean> liveData) {
+            this.database = database;
+            this.liveData = liveData;
+        }
+
+
+        //Everything inside doInBackground would be executed on a separate background thread
+        @Override
+        protected Boolean doInBackground(Article... articles) {
+            Article article = articles[0];
+            try {
+                database.articleDao().saveArticle(article);
+            } catch (Exception e) {
+                return false;
+            }
+            return true;
+        }
+    }
+
+    public LiveData<Boolean> favoriteArticle(Article article) {
+        MutableLiveData<Boolean> resultLiveData = new MutableLiveData<>();
+        //execute() returns immediately.
+        new FavoriteAsyncTask(database, resultLiveData).execute(article);
+        //The database operation runs in the background and notifies the result through the resultLiveData at a later time.
+        return resultLiveData;
+    }
+
+    // Get data from endpoint using url https://newsapi.org/v2/top-headlines?country={country} with registered apiKey,
+    // and hold the data in LiveData
     public LiveData<NewsResponse> getTopHeadlines(String country) {
         MutableLiveData<NewsResponse> topHeadlinesLiveData = new MutableLiveData<>();
 
@@ -68,14 +103,9 @@ public class NewsRepository {
         return topHeadlinesLiveData;
     }
 
-    /**
-     * Get data from endpoint using url https://newsapi.org/v2/everything?q={query} with registered apiKey,
-     * * and hold the data in LiveData
-     * @param query: the search keyword
-     * @return LiveData: This class is designed to hold individual data fields of {@link ViewModel},
-     * * but can also be used for sharing data between different modules in your application
-     * * in a decoupled fashion.
-     */
+
+    // Get data from endpoint using url https://newsapi.org/v2/everything?q={query} with registered apiKey,
+    // and hold the data in LiveData
     public LiveData<NewsResponse> searchNews(String query) {
         MutableLiveData<NewsResponse> allLiveData = new MutableLiveData<>();
 

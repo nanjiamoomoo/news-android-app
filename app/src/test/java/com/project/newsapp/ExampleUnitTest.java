@@ -1,4 +1,4 @@
-package com.project.newapp;
+package com.project.newsapp;
 
 import org.junit.Test;
 

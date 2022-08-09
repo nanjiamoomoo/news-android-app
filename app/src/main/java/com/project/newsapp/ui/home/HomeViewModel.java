@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.project.newsapp.model.Article;
 import com.project.newsapp.model.NewsResponse;
 import com.project.newsapp.repository.NewsRepository;
 
@@ -20,6 +21,10 @@ public class HomeViewModel extends ViewModel {
         countryInput.setValue(country);
     }
 
+    //Save article to the database
+    public void setFavoriteArticleInput(Article article) {
+        repository.favoriteArticle(article);
+    }
 
     public LiveData<NewsResponse> getTopHeadlines() {
         // Returns a {@code LiveData} mapped from the input {@code source} {@code LiveData} by applying

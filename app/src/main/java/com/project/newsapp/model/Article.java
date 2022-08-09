@@ -1,7 +1,13 @@
 package com.project.newsapp.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.Objects;
 
+@Entity
+//Marks a class as an entity. This class will have a mapping SQLite table in the database.
 public class Article {
 
     public String author;
@@ -9,6 +15,9 @@ public class Article {
     public String description;
     public String publishedAt;
     public String title;
+
+    @NonNull
+    @PrimaryKey
     public String url;
     public String urlToImage;
 

@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.project.newsapp.R;
 import com.project.newsapp.databinding.FragmentHomeBinding;
 import com.project.newsapp.model.Article;
 import com.project.newsapp.repository.NewsRepository;

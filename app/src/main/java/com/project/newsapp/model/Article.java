@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 //Marks a class as an entity. This class will have a mapping SQLite table in the database.
-public class Article {
+//Make Article implementing Serializable in order to pass Article between fragments with Safe Args
+public class Article implements Serializable {
 
     public String author;
     public String content;

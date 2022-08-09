@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.project.newsapp.databinding.FragmentSearchBinding;
@@ -93,5 +94,15 @@ public class SearchFragment extends Fragment {
                             Log.d("SearchFragment", newsResponse.toString());
                             newsAdapter.setArticles(newsResponse.articles);
                         });
+
+        //Provide an anonymous implementation of the ItemCallback under SearchNewsAdapter
+        newsAdapter.setItemCallback(article -> {
+            //get the navigation direction, provide the required argument article, and navigate to the direction.
+            //1. pass article in the navigation direction
+            SearchFragmentDirections.ActionNavigationSearchToNavigationDetails
+                    direction = SearchFragmentDirections.actionNavigationSearchToNavigationDetails(article);
+            //2. then call the navigate with direction
+            NavHostFragment.findNavController(SearchFragment.this).navigate(direction);
+        });
     }
 }

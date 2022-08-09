@@ -13,13 +13,6 @@ public class MainActivity extends AppCompatActivity {
 
     private NavController navController;
 
-    //Overriding onSupportNavigateUp is for handling the top left back button.
-    //Notice the title bar also changes with bottom navigation.
-    @Override
-    public boolean onSupportNavigateUp() {
-        return super.onSupportNavigateUp();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Finds a fragment that was identified by the given id "nav_host_fragment"
         //NavHostFragment provides an area within your layout for self-contained navigation to occur.
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment);
 
         //Returns the navigation controller for the navigation host fragment
         navController = navHostFragment.getNavController();
@@ -45,4 +39,12 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController);
 
     }
+
+    //Overriding onSupportNavigateUp is for handling the top left back button.
+    //Notice the title bar also changes with bottom navigation.
+    @Override
+    public boolean onSupportNavigateUp() {
+        return navController.navigateUp();
+    }
+
 }

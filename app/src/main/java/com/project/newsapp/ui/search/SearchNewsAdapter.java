@@ -29,7 +29,19 @@ import java.util.List;
 public class SearchNewsAdapter extends RecyclerView.Adapter<SearchNewsAdapter.SearchNewsViewHolder> {
 
     // 1. Supporting data:
+
+    //Define ItemCallBack interface to set up the navigation from SearchFragment to DetailsFragment
+    interface ItemCallback {
+        void onOpenDetails(Article article);
+    }
+
+    private ItemCallback itemCallback;
+
     private List<Article> articles = new ArrayList<>();
+
+    public void setItemCallback(ItemCallback itemCallback) {
+        this.itemCallback = itemCallback;
+    }
 
     public void setArticles(List<Article> newList) {
         articles.clear();
@@ -78,6 +90,9 @@ public class SearchNewsAdapter extends RecyclerView.Adapter<SearchNewsAdapter.Se
             // //Use Picasso library to load any given image URL
             Picasso.get().load(article.urlToImage).resize(200,200).into(holder.itemImageView);
         }
+        //Use the itemCallback to inform the implementer the onOpenDetails event when an item is clicked.
+        holder.itemView.setOnClickListener(v -> itemCallback.onOpenDetails(article));
+
     }
 
     //Provide the current data collection size

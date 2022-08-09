@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.project.newsapp.databinding.FragmentSaveBinding;
@@ -63,6 +64,13 @@ public class SaveFragment extends Fragment {
             @Override
             public void onOpenDetails(Article article) {
                 Log.d("onOpenDetails", article.toString());
+
+                //get the navigation direction, provide the required argument article, and navigate to the direction.
+                //1. pass article in the navigation direction
+                SaveFragmentDirections.ActionNavigationSaveToNavigationDetails
+                        direction = SaveFragmentDirections.actionNavigationSaveToNavigationDetails(article);
+                //2. then call the navigate with direction
+                NavHostFragment.findNavController(SaveFragment.this).navigate(direction);
             }
 
             @Override

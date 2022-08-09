@@ -10,10 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.newsapp.R;
-import com.project.newsapp.databinding.SearchNewsItemBinding;
 import com.project.newsapp.databinding.SwipeNewsCardBinding;
 import com.project.newsapp.model.Article;
-import com.project.newsapp.ui.search.SearchNewsAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

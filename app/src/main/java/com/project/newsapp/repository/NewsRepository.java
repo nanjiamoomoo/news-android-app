@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.project.newsapp.NewsApplication;
-import com.project.newsapp.database.ArticleDao;
 import com.project.newsapp.database.NewsAppDatabase;
 import com.project.newsapp.model.Article;
 import com.project.newsapp.model.NewsResponse;

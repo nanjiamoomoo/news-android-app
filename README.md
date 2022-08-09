@@ -69,13 +69,13 @@ Defines the adapter to be used by the RecyclerView and added ItemCallback interf
 #### **repository**
 **_`NewsRepository.class`_**
 * Used Retrofit to implement the NewsApi interface. And utilized the retrofit method to get data from endpoint and and hold the data in LiveData.
-** getTopHeadlines() to get the latest news from newsapi.org.
-** searchNews() to get the news from newsapi.org based on user's search keyword. 
+  * getTopHeadlines() to get the latest news from newsapi.org. 
+  * searchNews() to get the news from newsapi.org based on user's search keyword. 
 
-*Used an AsyncTask to access Room database and dispatch the CRUD work to a background thread.
-** favoriteArticle(Article article) to save liked news/article to the Room database. 
-** getAllSavedArticles() to get all saved articles from Room database.
-** deleteArticle(Article article) to delete a specific article from Room database. 
+* Used an AsyncTask to access Room database and dispatch the CRUD work to a background thread.
+  * favoriteArticle(Article article) to save liked news/article to the Room database. 
+  * getAllSavedArticles() to get all saved articles from Room database.
+  * deleteArticle(Article article) to delete a specific article from Room database. 
 
 **_`NewsViewModelFactory.class`_**
 Create ViewModel based on the ViewModel.

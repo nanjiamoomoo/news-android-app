@@ -75,6 +75,7 @@ public class SearchNewsAdapter extends RecyclerView.Adapter<SearchNewsAdapter.Se
         Article article = articles.get(position);
         holder.itemTitleTextView.setText(article.title);
         if (article.urlToImage != null) {
+            // //Use Picasso library to load any given image URL
             Picasso.get().load(article.urlToImage).resize(200,200).into(holder.itemImageView);
         }
     }

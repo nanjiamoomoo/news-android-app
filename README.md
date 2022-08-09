@@ -1,7 +1,7 @@
 # News Recommendation App
 
 ## **Project Description**
-An Android recommendation app that allows users to watch latest news, search and save news.
+An Android news recommendation app that allows users to watch news, search news and save news to local Room database for later view. 
 
 ## **Project Architecture**
 The project is built with Android MVVC (Model-View-ViewModel) Architecture pattern. 
@@ -12,54 +12,62 @@ The project is built with Android MVVC (Model-View-ViewModel) Architecture patte
 
 ### **packages**
 
-**_`ui/home`_**
-#### **HomeFragment.class**
+#### **ui/home**
+**_`HomeFragment.class`_**
 Display latest news using CardStackView (based on RecyclerView) with defined adapter and layout manager, and utilized CardStackView library (based on RecyclerView) to support swipe animation.
 * onViewCreated() is called to notify ViewModel to get latest news and display the result in the Home fragment using CardStackView library.
 * swipeCard() is called to bind CardStackView component and trigger swipe animation when like/unlike click event happens. 
 * onCardSwiped() is called when a card is swiped. Based on the swipe direction to determine if the card is liked or unliked and at the same time save the liked card in the Room database.
 
-#### **HomeViewModel.class**
+**_`HomeViewModel.class`_**
 Works with Model(Repository) layer to get and save data. 
 * getTopHeadLines() is responsible for getting the latest news from the RESTful endpoint newsapi.org
 * setFavoriteArticleInput(Article article) to save the article to the Room database. 
 
-#### **CardSwipeAdapter.class**
+**_`CardSwipeAdapter.class`_**
 Defines the adapter to be used by the RecyclerView.
 *ViewHolder is defined to describe an item view and its place within the RecyclerView. Link the item_view layout to the ViewHolder and finish create/bind ViewHolder process in the RecyclerView.
 * onBindViewHolder() is Called by RecyclerView to display the data at the specified position. Picasso library is used to display the news content image.
 
-**_`ui/search`_**
-#### **SearchFragment.class**
-Display searched result using RecyclerView with defined adapter and layout manager. 
+#### **ui/search**
+**_`SearchFragment.class`_**
+Display news based on search result using RecyclerView with defined adapter and layout manager. 
 * onViewCreated() is called to notify ViewModel to query news based on user search keywords and display the result in the Search fragment using RecyclerView.
 
-#### **SearchViewModel.class**
+**_`SearchViewModel.class`_**
 Works with Model(Repository) layer to get and save data.
 * searchNews() is responsible for getting the news from the RESTful endpoint newsapi.org based on the user's search keyword.
 * setSearchInput(String query) to set the query keyword. 
 
-#### **SearchNewsAdapter.class**
+**_`SearchNewsAdapter.class`_**
 Defines the adapter to be used by the RecyclerView.
 * ViewHolder is defined to describe an item view and its place within the RecyclerView. Link the item_view layout to the ViewHolder and finish create/bind ViewHolder process in the RecyclerView. 
 * onBindViewHolder() is Called by RecyclerView to display the data at the specified position. Picasso library is used to display the news content image.
 
-**_`ui/save` _**
-* #### **SaveFragment.class**
-Display latest news and utilized CardStackView library (based on RecyclerView) to support swipe animation.
-* onViewCreated() is called to notify ViewModel to get all saved(liked) articles from Room database and display them in the Save fragment page.
+#### **ui/save**
+**_`SaveFragment.class`_**
+Display saved news/articles using RecyclerView with defined adapter and layout manager.
+* onViewCreated() is called to notify ViewModel to get all saved(liked) articles from Room database and display them in the Save fragment using RecyclerView.
+* Added anonymous implementation of ItemCallback to implement onRemoveFavorite() and onOpenDetails() methods. 
 
-#### **SaveViewModel.class**
+**_`SaveViewModel.class`_**
 Works with Model(Repository) layer to get data and delete data from Room database.
 * getAllSavedArticles() is to get all saved articles from Room database. 
 * deleteSavedArticle(Article article) to delete a specific article from Room database. 
 
-**_`model`_**
+**_`SavedNewsAdapter.class`_**
+Defines the adapter to be used by the RecyclerView and added ItemCallback interface to relay the events from inside SaveNewsAdapter to SaveFragment.
+* ViewHolder is defined to describe an item view and its place within the RecyclerView. Link the item_view layout to the ViewHolder and finish create/bind ViewHolder process in the RecyclerView.
+* onBindViewHolder() is Called by RecyclerView to display the data at the specified position.
+* OnClick event is bind to the "thumb_up" icon to trigger onRemoveFavorite() method to delete article from database. 
+* OnClick event is bind to the view item to trigger onOpenDetails() method to open new fragment for article details. 
+
+#### **model**
 * Defined the Java model classes that map to the server-side JSON format data.
 * With the use of Room ORM, model classes also map to the tables in the Room database. 
 
-**_`repository`_**
-#### **NewsRepository.class**
+#### **repository**
+**_`NewsRepository.class`_**
 * Used Retrofit to implement the NewsApi interface. And utilized the retrofit method to get data from endpoint and and hold the data in LiveData.
 ** getTopHeadlines() to get the latest news from newsapi.org.
 ** searchNews() to get the news from newsapi.org based on user's search keyword. 
@@ -69,13 +77,13 @@ Works with Model(Repository) layer to get data and delete data from Room databas
 ** getAllSavedArticles() to get all saved articles from Room database.
 ** deleteArticle(Article article) to delete a specific article from Room database. 
 
-#### **NewsViewModelFactory.class**
+**_`NewsViewModelFactory.class`_**
 Create ViewModel based on the ViewModel.
 
-**_`network`_**
+#### **network**
 * Configured Retrofit instance and defined REST APIs to send request to the endpoint (newsapi.org) and returns response. 
 
-**_`database_**
+#### **database**
 * Defined Room database and APIs. 
 
 ## **Page Navigation**

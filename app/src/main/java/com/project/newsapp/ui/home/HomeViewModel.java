@@ -21,9 +21,11 @@ public class HomeViewModel extends ViewModel {
         countryInput.setValue(country);
     }
 
+    //Save article to the database
     public void setFavoriteArticleInput(Article article) {
         repository.favoriteArticle(article);
     }
+
     public LiveData<NewsResponse> getTopHeadlines() {
         // Returns a {@code LiveData} mapped from the input {@code source} {@code LiveData} by applying
         // {@code switchMapFunction} to each value set on {@code source}.

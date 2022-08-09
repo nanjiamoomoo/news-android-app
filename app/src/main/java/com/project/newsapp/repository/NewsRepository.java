@@ -14,6 +14,8 @@ import com.project.newsapp.model.NewsResponse;
 import com.project.newsapp.network.NewsApi;
 import com.project.newsapp.network.RetrofitClient;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,12 +57,25 @@ public class NewsRepository {
         }
     }
 
+    //save an article to the database
     public LiveData<Boolean> favoriteArticle(Article article) {
         MutableLiveData<Boolean> resultLiveData = new MutableLiveData<>();
         //execute() returns immediately.
         new FavoriteAsyncTask(database, resultLiveData).execute(article);
         //The database operation runs in the background and notifies the result through the resultLiveData at a later time.
         return resultLiveData;
+    }
+
+    //query all saved articles from the database
+    public LiveData<List<Article>> getAllSavedArticles() {
+        return database.articleDao().getAllArticles();
+    }
+
+
+    // delete a saved article from database
+    // A simpler version of the AsyncTask to run deleteArticle operation when we don't care about the result or the intermediate progress.
+    public void deleteSavedArticle(Article article) {
+        AsyncTask.execute(() -> database.articleDao().deleteArticle(article));
     }
 
     // Get data from endpoint using url https://newsapi.org/v2/top-headlines?country={country} with registered apiKey,
